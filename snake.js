@@ -30,7 +30,7 @@ class snake_game{
     is_game_over = false
     direction = {}
     start_position = {"row":1,"column":1}
-    board_size = 5
+    board_size = 9
 
     dirs_map_input = {
         "w": {"row":0,"column":-1}, 
@@ -65,7 +65,7 @@ class snake_game{
                 }
                 
                 board[i].push(is_border);
-                this.my_helper_class.draw_cube(i,j, is_border,"black");
+                this.my_helper_class.draw_cube(i,j, is_border,"grey");
             }
         }
         this.snake.length = 0;
@@ -100,6 +100,9 @@ class snake_game{
     sequence_move() {
         var apple_eaten = false;
 
+
+        var curx = this.snake[this.snake.length - 1]["row"]
+        var cury = this.snake[this.snake.length - 1]["column"]
         // console.log(this.snake);
         var newx = this.snake[this.snake.length - 1]["row"] + this.direction["row"];
         var newy = this.snake[this.snake.length - 1]["column"] + this.direction["column"];
@@ -126,15 +129,29 @@ class snake_game{
     
         // apply it on the board
         this.board[newx][newy] = true;
-        this.my_helper_class.draw_cube(newx,newy,true);
-    
+        if(this.snake.length > 1){
+        this.my_helper_class.draw_cube(newx, newy, true, "#32CD32");
+        this.my_helper_class.draw_cube(curx, cury, true, "black");
+    }
+        else{
+            this.my_helper_class.draw_cube(newx, newy, true, "#32CD32");
+        }
+        
+        // var snake_head = this.snake[this.snake.length - 1];
+        // var snake_second = this.snake[this.snake.length - 2];
+
+        // this.my_helper_class.draw_cube(snake_head["row"],snake_head["column"],true,"green");
+        // this.my_helper_class.draw_cube(snake_second["row"],snake_second["column"],true,"black");
+        // }else{
+        //     var snake_head = this.snake[this.snake.length - 1];
+        //     this.my_helper_class.draw_cube(snake_head["row"],snake_head["column"],true,"green");
+        // }
+
+
         if(apple_eaten){
            this.create_apple();
     
         }
-    }
-    check_game_state() {
-        
     }
 
     create_apple() {
@@ -158,7 +175,7 @@ class snake_game{
         this.my_helper_class.draw_cube(random_x,random_y,true,"red");
         
         this.apple_location = {"row": random_x, "column":random_y}
-        console.log(this.apple_location);
+        
         
     }
 
@@ -168,19 +185,46 @@ class snake_game{
 
 
 my_timer = ms => new Promise(res => setTimeout(res, ms))
+
+
+// real
+// async function start_game(my_timer) {
+    
+//     var my_class = new my_helper_class()
+
+//     var act_snake_game = new snake_game(true, my_class);
+
+//     while (!act_snake_game.is_game_over) {
+//         // if(i%1 == 0){
+//         await my_timer(500);
+        
+//         act_snake_game.sequence_move();
+        
+//     }    
+
+// }
+
 async function start_game(my_timer) {
     
     var my_class = new my_helper_class()
-
+    
     var act_snake_game = new snake_game(true, my_class);
-
+    var my_computer_class = new shortcut_finder(act_snake_game)
+    var i = 0;
     while (!act_snake_game.is_game_over) {
-        // if(i%1 == 0){
-        await my_timer(500);
+        if(i%1 == 0){
+            await my_timer(100);
+        }
         
-        act_snake_game.sequence_move();
-        
+        my_computer_class.computer_move()        
+        i++;
+        if(i%1000 == 0){
+            i = 0;
+        }
     }    
 
 }
+
+
+
 start_game(my_timer)
