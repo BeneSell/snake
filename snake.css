@@ -1,0 +1,103 @@
+/* Snake game */
+/* Author: 2019-2020,
+    License: MIT */
+
+/* The container */
+
+body {
+    background-color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    
+}
+body > main,aside {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3em;
+    height: 100%;
+}
+
+/* The canvas */
+
+canvas {
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    display: block;
+    margin: 0 auto;
+    padding: 0;
+}
+
+/* The score */
+
+#score {
+    font-size: 24px;
+    margin: 0;
+    padding: 0;
+}
+
+/* The game over message */
+
+#gameover {
+    display: none;
+    font-size: 48px;
+    margin: 0;
+    padding: 0;
+}
+
+.snake_settings {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3em;
+    height: 100%;
+}
+input{
+    margin: 0.5em;
+    padding: 0.5em;
+    font-size: 1.5em;
+    border: 1px solid #000000;
+    border-radius: 0.5em;
+    background-color: #ffffff;
+    color: #000000;
+}
+
+input[type="checkbox"] {
+    width: 1.5em;
+    height: 1.5em;
+}
+label{
+    font-size: 1em;
+    margin: 0.5em;
+    padding: 0.5em;
+    border-radius: 0.5em;
+    background-color: #ffffff;
+    color: #000000;
+    /* Center text */    
+
+    display: flex;  
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
+
+}
+form.snake_settings{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 3em;
+    height: 100%;
+}
+/* Path: snake.js */
+/* Snake game */
