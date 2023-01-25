@@ -1,5 +1,11 @@
 class my_helper_class{
-    draw_cube(x,y, is_border, color = "black", text="") {
+    my_timer;
+
+    constructor(){
+        this.my_timer = ms => new Promise(res => setTimeout(res, ms))
+    }
+    
+    draw_cube(x,y, is_border, color = "#D5F5E3", text="") {
         var c = document.getElementById("myCanvas");
         var ctx = c.getContext("2d");
         ctx.beginPath();
@@ -12,11 +18,48 @@ class my_helper_class{
         }
         ctx.fill();
     
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "#D5F5E3";
     
         ctx.fillText(text, (x*33)+15,(y*33)+15);
         
     }
+    // real
+    async start_game_real() {
+    
+    var my_class = new my_helper_class()
+
+    var act_snake_game = new snake_game(true, this);
+
+    while (!act_snake_game.is_game_over) {
+        // if(i%1 == 0){
+        await this.my_timer(500);
+        
+        act_snake_game.sequence_move();
+        
+    }    
+
+}
+
+    async start_game_computer() {
+    
+    var my_class = new my_helper_class()
+    
+    var act_snake_game = new snake_game(true, this);
+    var my_computer_class = new shortcut_finder(act_snake_game)
+    var i = 0;
+    while (!act_snake_game.is_game_over) {
+        if(i%1 == 0){
+            await this.my_timer(100);
+        }
+        
+        my_computer_class.computer_move()        
+        i++;
+        if(i%1000 == 0){
+            i = 0;
+        }
+    }    
+
+}
 
 }
 
@@ -65,7 +108,7 @@ class snake_game{
                 }
                 
                 board[i].push(is_border);
-                this.my_helper_class.draw_cube(i,j, is_border,"grey");
+                this.my_helper_class.draw_cube(i,j, is_border,"#70C1B3");
             }
         }
         this.snake.length = 0;
@@ -130,18 +173,18 @@ class snake_game{
         // apply it on the board
         this.board[newx][newy] = true;
         if(this.snake.length > 1){
-        this.my_helper_class.draw_cube(newx, newy, true, "#32CD32");
-        this.my_helper_class.draw_cube(curx, cury, true, "black");
+        this.my_helper_class.draw_cube(newx, newy, true, "#2E4053");
+        this.my_helper_class.draw_cube(curx, cury, true, "#D5F5E3");
     }
         else{
-            this.my_helper_class.draw_cube(newx, newy, true, "#32CD32");
+            this.my_helper_class.draw_cube(newx, newy, true, "#2E4053");
         }
         
         // var snake_head = this.snake[this.snake.length - 1];
         // var snake_second = this.snake[this.snake.length - 2];
 
         // this.my_helper_class.draw_cube(snake_head["row"],snake_head["column"],true,"green");
-        // this.my_helper_class.draw_cube(snake_second["row"],snake_second["column"],true,"black");
+        // this.my_helper_class.draw_cube(snake_second["row"],snake_second["column"],true,"#D5F5E3");
         // }else{
         //     var snake_head = this.snake[this.snake.length - 1];
         //     this.my_helper_class.draw_cube(snake_head["row"],snake_head["column"],true,"green");
@@ -172,59 +215,30 @@ class snake_game{
             var random_y = Math.floor(Math.random() * this.board.length);
             is_blocked = this.board[random_x][random_y];
         }
-        this.my_helper_class.draw_cube(random_x,random_y,true,"red");
+        this.my_helper_class.draw_cube(random_x,random_y,true,"#F9A825");
         
         this.apple_location = {"row": random_x, "column":random_y}
         
         
     }
+    startGame() {
+        this.init();
+        this.is_game_over = false;
+        this.my_helper_class.start_game_real();
+    }
+    pauseGame(){
+        
+    }
+    // resumeGame()
+    // restartGame()
 
 }
 
 
 
 
-my_timer = ms => new Promise(res => setTimeout(res, ms))
 
 
-// real
-// async function start_game(my_timer) {
-    
-//     var my_class = new my_helper_class()
-
-//     var act_snake_game = new snake_game(true, my_class);
-
-//     while (!act_snake_game.is_game_over) {
-//         // if(i%1 == 0){
-//         await my_timer(500);
-        
-//         act_snake_game.sequence_move();
-        
-//     }    
-
-// }
-
-async function start_game(my_timer) {
-    
-    var my_class = new my_helper_class()
-    
-    var act_snake_game = new snake_game(true, my_class);
-    var my_computer_class = new shortcut_finder(act_snake_game)
-    var i = 0;
-    while (!act_snake_game.is_game_over) {
-        if(i%1 == 0){
-            await my_timer(100);
-        }
-        
-        my_computer_class.computer_move()        
-        i++;
-        if(i%1000 == 0){
-            i = 0;
-        }
-    }    
-
-}
-
-
-
-start_game(my_timer)
+// switch bewtwen real and computer
+var my_class = new my_helper_class()
+my_class.start_game_computer();
