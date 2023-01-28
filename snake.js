@@ -48,8 +48,8 @@ class my_helper_class{
     var my_computer_class = new shortcut_finder(act_snake_game)
     var i = 0;
     while (!act_snake_game.is_game_over) {
-        if(i%1 == 0){
-            await this.my_timer(100);
+        if(i%3 == 0){
+            await this.my_timer(1);
         }
         
         my_computer_class.computer_move()        
@@ -61,8 +61,45 @@ class my_helper_class{
 
 }
 
+async start_game_compute_until_apple() {
+    // cool idea would be to compute until apple is found
+    // then the player can click on a empty field to create the next apple
+    // then the computer can compute again
+
+    var my_class = new my_helper_class()
+    
+    var act_snake_game = new snake_game(true, this);
+    var my_computer_class = new shortcut_finder(act_snake_game)
+    var i = 0;
+
+    
+    while (!act_snake_game.is_game_over) {
+   
+        
+        my_computer_class.computer_move()        
+        await this.my_timer(10);
+        if(act_snake_game.apple_eaten) {
+            
+            while(!act_snake_game.user_has_clicked) {
+                await this.my_timer(50);
+                console.log("waiting for user to click");
+            }
+            act_snake_game.user_has_clicked = false;
+            // await this.my_timer(500);
+            // find method a user can create a new apple
+            // if the users clicks at this moment the apple is on a new position
+            
+        }     
+        
+        if(i%1000 == 0){
+            this.response_timeout = true;
+            i = 0;
+        }
+    }    
+
 }
 
+}
 
 class snake_game{
 
@@ -70,10 +107,13 @@ class snake_game{
     snake = []
     board = []
     apple_location = {}
+    apple_eaten = false
     is_game_over = false
     direction = {}
     start_position = {"row":1,"column":1}
-    board_size = 9
+    board_size = 15
+
+    user_has_clicked = false
 
     dirs_map_input = {
         "w": {"row":0,"column":-1}, 
@@ -84,10 +124,25 @@ class snake_game{
     
 
     constructor(is_controlled_by_human, my_helper_class){
+        document.getElementById("myCanvas").addEventListener( "click", this.create_apple_through_click );
         this.is_controlled_by_human = is_controlled_by_human;
         this.my_helper_class = my_helper_class;
         this.init();
     }
+
+    create_apple_through_click = e => {
+        var x = e.pageX - e.target.offsetLeft;
+        var y = e.pageY - e.target.offsetTop;
+        var row = Math.floor(x/33);
+        var column = Math.floor(y/33);
+        console.log(row, column);
+        
+        if(this.apple_eaten && !this.board[row][column]){
+            this.create_apple({"row": row,"column": column});
+            this.user_has_clicked = true;
+        }
+        // this.create_apple(row, column);
+      }
 
     init() {
         var board = []
@@ -117,7 +172,7 @@ class snake_game{
         this.my_helper_class.draw_cube(1,1,true)
         this.board = board;
         this.direction = this.dirs_map_input["s"];
-        this.create_apple(board);
+        this.create_apple();
         
 
         addEventListener('keypress', (event) => {
@@ -141,7 +196,14 @@ class snake_game{
     }
 
     sequence_move() {
-        var apple_eaten = false;
+
+        // this is infornt because its an interation where the apple isnt set and i can interact with this
+        // no big deal for the user
+        // no big deal for the computer
+
+        if(this.apple_eaten){
+            this.create_apple();
+         }
 
 
         var curx = this.snake[this.snake.length - 1]["row"]
@@ -155,7 +217,7 @@ class snake_game{
         
         // hmmm
         if(this.apple_location["row"] == newx  && this.apple_location["column"] == newy){
-            apple_eaten = true;
+            this.apple_eaten = true;
         }else{
             this.delete_last();
         }
@@ -174,7 +236,7 @@ class snake_game{
         this.board[newx][newy] = true;
         if(this.snake.length > 1){
         this.my_helper_class.draw_cube(newx, newy, true, "#2E4053");
-        this.my_helper_class.draw_cube(curx, cury, true, "#D5F5E3");
+        this.my_helper_class.draw_cube(curx, cury, true, "#70C1B3");
     }
         else{
             this.my_helper_class.draw_cube(newx, newy, true, "#2E4053");
@@ -189,16 +251,33 @@ class snake_game{
         //     var snake_head = this.snake[this.snake.length - 1];
         //     this.my_helper_class.draw_cube(snake_head["row"],snake_head["column"],true,"green");
         // }
-
-
-        if(apple_eaten){
-           this.create_apple();
-    
-        }
     }
 
-    create_apple() {
-        // check if every cell is blocked
+    create_apple(new_location = {"row":0, "column":0}) {
+        // set timeout for 1 second and then create apple
+
+        
+
+        if(new_location["row"] != 0 && new_location["column"] != 0){
+            this.create_apple_with_location(new_location);
+            this.apple_eaten = false;
+            return ""
+        }
+        this.create_apple_random();  
+        this.apple_eaten = false; 
+            return ""    
+    
+        
+
+    }
+    create_apple_with_location(new_location) {
+
+
+        this.my_helper_class.draw_cube(new_location["row"],new_location["column"],true,"#F9A825");
+        
+        this.apple_location = new_location
+    }
+    create_apple_random() {
         var is_blocked = true;
     
         var block_arry = [];
@@ -218,9 +297,9 @@ class snake_game{
         this.my_helper_class.draw_cube(random_x,random_y,true,"#F9A825");
         
         this.apple_location = {"row": random_x, "column":random_y}
-        
-        
+    
     }
+
     startGame() {
         this.init();
         this.is_game_over = false;
@@ -241,4 +320,4 @@ class snake_game{
 
 // switch bewtwen real and computer
 var my_class = new my_helper_class()
-my_class.start_game_computer();
+my_class.start_game_compute_until_apple();
