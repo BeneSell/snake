@@ -1,10 +1,55 @@
 class my_helper_class{
     my_timer;
-
+    k_showed_step = 1;
+    time_between = 0;
+    first_time = true;
     constructor(){
         this.my_timer = ms => new Promise(res => setTimeout(res, ms))
     }
+
+    create_canvas(board_size) {
+        var board_size_plus_one = board_size + 1;
+        if(this.first_time){
+            var c = document.createElement("canvas");
+            c.setAttribute("id", "myCanvas");
+            c.setAttribute("width", 33*board_size_plus_one);
+            c.setAttribute("height", 33*board_size_plus_one);
+            c.setAttribute("style", "border:1px solid #000000;");
+            document.querySelector("main").appendChild(c);
+        }
+        this.first_time = false;
+
+        var ctx = c.getContext("2d");
+        ctx.clearRect(0, 0, c.width, c.height);
+        ctx.beginPath();
+        ctx.rect(0, 0, 33*board_size_plus_one, 33*board_size_plus_one);
+        ctx.fillStyle = "#D5F5E3";
+        ctx.fill();
+    }
+    create_board(board_size) {
+        var board = []
     
+        // this.result_move_list = create_result_move_list(board_x, board_y);
+    
+        
+        for (let i = 0; i <= board_size; i++) {
+            board.push([]);
+            for (let j = 0; j <= board_size; j++) {
+                var is_border = false;
+    
+                if(j == board_size  | i == board_size ){
+                    is_border = true
+                }
+                if(j == 0 | i == 0 ){
+                    is_border = true
+                }
+                
+                board[i].push(is_border);
+                this.draw_cube(i,j, is_border,"#70C1B3");
+            }
+        }
+        return board;
+    }
     draw_cube(x,y, is_border, color = "#D5F5E3", text="") {
         var c = document.getElementById("myCanvas");
         var ctx = c.getContext("2d");
@@ -111,7 +156,7 @@ class snake_game{
     is_game_over = false
     direction = {}
     start_position = {"row":1,"column":1}
-    board_size = 15
+    board_size = 0
 
     user_has_clicked = false
 
@@ -123,11 +168,14 @@ class snake_game{
     }
     
 
-    constructor(is_controlled_by_human, my_helper_class){
-        document.getElementById("myCanvas").addEventListener( "click", this.create_apple_through_click );
+    constructor(is_controlled_by_human, my_helper_class, board_size = 15){
+        
         this.is_controlled_by_human = is_controlled_by_human;
         this.my_helper_class = my_helper_class;
+        this.board_size = board_size;
         this.init();
+
+        document.getElementById("myCanvas").addEventListener( "click", this.create_apple_through_click );
     }
 
     create_apple_through_click = e => {
@@ -145,32 +193,12 @@ class snake_game{
       }
 
     init() {
-        var board = []
-    
-        // this.result_move_list = create_result_move_list(board_x, board_y);
-    
-        
-        for (let i = 0; i <= this.board_size; i++) {
-            board.push([]);
-            for (let j = 0; j <= this.board_size; j++) {
-                var is_border = false;
-    
-                if(j == this.board_size  | i == this.board_size ){
-                    is_border = true
-                }
-                if(j == 0 | i == 0 ){
-                    is_border = true
-                }
-                
-                board[i].push(is_border);
-                this.my_helper_class.draw_cube(i,j, is_border,"#70C1B3");
-            }
-        }
+        this.my_helper_class.create_canvas(this.board_size);
+        this.board = this.my_helper_class.create_board(this.board_size);
         this.snake.length = 0;
 
-        this.snake = [this.start_position]
-        this.my_helper_class.draw_cube(1,1,true)
-        this.board = board;
+        this.snake = [this.start_position];
+        this.my_helper_class.draw_cube(1,1,true);
         this.direction = this.dirs_map_input["s"];
         this.create_apple();
         
@@ -314,10 +342,3 @@ class snake_game{
 }
 
 
-
-
-
-
-// switch bewtwen real and computer
-var my_class = new my_helper_class()
-my_class.start_game_compute_until_apple();
