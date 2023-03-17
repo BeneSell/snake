@@ -26,26 +26,27 @@
                 <p>How do you want to play?</p>
                 <label><input type="radio" name="play" value="1">Controll the snake</label>
                 <label><input type="radio" name="play" value="2">Controll the apple</label>
-                <label><input type="radio" name="play" value="3">Dont controll anything</label>
+                <label><input type="radio" name="play" value="3" checked="checked" >Dont controll anything</label>
             </section>
                 
             </div>
             
+
         
-        <section class="change_state">
-            <input type="button" value="Start" onclick="startGame()">
-            <input type="button" value="Pause" onclick="pauseGame()">
-            <input type="button" value="Resume" onclick="resumeGame()">
-            <input type="button" value="Restart" onclick="restartGame()">
-        </section>
     </form>
 
 </aside>
 <main>
     <h1>Snake</h1>
-<!-- <canvas id="myCanvas" width="1000" height="1500" style="border:1px solid #d3d3d3;"> -->
-</canvas>
-
+    <div id="canvas_placeholder">
+        <canvas id="myCanvas" width="396" height="396" style="border:1px solid #d3d3d3;">
+        </canvas>
+    </div>
+    <div class="controll_buttons">
+        <input type="button" value="Start" onclick="startGame()">
+        <input type="button" value="Stop" onclick="stopGame()">
+        <input type="button" value="Pause" onclick="pauseGame()">
+    </div>
 </main>
 </body>
 

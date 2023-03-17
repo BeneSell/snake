@@ -2,22 +2,24 @@ class my_helper_class{
     my_timer;
     k_showed_step = 1;
     time_between = 0;
-    first_time = true;
+    act_snake_game = null;
     constructor(){
         this.my_timer = ms => new Promise(res => setTimeout(res, ms))
     }
 
     create_canvas(board_size) {
         var board_size_plus_one = board_size + 1;
-        if(this.first_time){
-            var c = document.createElement("canvas");
-            c.setAttribute("id", "myCanvas");
-            c.setAttribute("width", 33*board_size_plus_one);
-            c.setAttribute("height", 33*board_size_plus_one);
-            c.setAttribute("style", "border:1px solid #000000;");
-            document.querySelector("main").appendChild(c);
+        var elementExists = document.getElementById("myCanvas");
+        if(elementExists){
+            document.querySelector("#canvas_placeholder").removeChild(elementExists);
         }
-        this.first_time = false;
+        var c = document.createElement("canvas");
+        c.setAttribute("id", "myCanvas");
+        c.setAttribute("width", 33*board_size_plus_one);
+        c.setAttribute("height", 33*board_size_plus_one);
+        c.setAttribute("style", "border:1px solid #000000;");
+        document.querySelector("#canvas_placeholder").appendChild(c);
+
 
         var ctx = c.getContext("2d");
         ctx.clearRect(0, 0, c.width, c.height);
@@ -68,81 +70,86 @@ class my_helper_class{
         ctx.fillText(text, (x*33)+15,(y*33)+15);
         
     }
+
     // real
-    async start_game_real() {
-    
-    var my_class = new my_helper_class()
+    async start_game_real(board_size, game_speed, skips) {
 
-    var act_snake_game = new snake_game(true, this);
+        this.act_snake_game = new snake_game(true, this, board_size=board_size);
 
-    while (!act_snake_game.is_game_over) {
-        // if(i%1 == 0){
-        await this.my_timer(500);
-        
-        act_snake_game.sequence_move();
-        
-    }    
-
-}
-
-    async start_game_computer() {
-    
-    var my_class = new my_helper_class()
-    
-    var act_snake_game = new snake_game(true, this);
-    var my_computer_class = new shortcut_finder(act_snake_game)
-    var i = 0;
-    while (!act_snake_game.is_game_over) {
-        if(i%3 == 0){
-            await this.my_timer(1);
-        }
-        
-        my_computer_class.computer_move()        
-        i++;
-        if(i%1000 == 0){
-            i = 0;
-        }
-    }    
-
-}
-
-async start_game_compute_until_apple() {
-    // cool idea would be to compute until apple is found
-    // then the player can click on a empty field to create the next apple
-    // then the computer can compute again
-
-    var my_class = new my_helper_class()
-    
-    var act_snake_game = new snake_game(true, this);
-    var my_computer_class = new shortcut_finder(act_snake_game)
-    var i = 0;
-
-    
-    while (!act_snake_game.is_game_over) {
-   
-        
-        my_computer_class.computer_move()        
-        await this.my_timer(10);
-        if(act_snake_game.apple_eaten) {
-            
-            while(!act_snake_game.user_has_clicked) {
+        while (!this.act_snake_game.is_game_over) {
+            while(!this.act_snake_game.pause_game) {
                 await this.my_timer(50);
-                console.log("waiting for user to click");
+                console.log("paused the game");
             }
-            act_snake_game.user_has_clicked = false;
-            // await this.my_timer(500);
-            // find method a user can create a new apple
-            // if the users clicks at this moment the apple is on a new position
-            
-        }     
-        
-        if(i%1000 == 0){
-            this.response_timeout = true;
-            i = 0;
-        }
-    }    
 
-}
+            // if(i%1 == 0){
+            await this.my_timer(game_speed);
+            
+            this.act_snake_game.sequence_move();
+            
+        }
+
+    }
+
+    async start_game_computer(board_size, game_speed, skips) {
+        
+        this.act_snake_game = new snake_game(true, this, board_size=board_size);
+        var my_computer_class = new shortcut_finder(this.act_snake_game)
+        var i = 0;
+        while (!this.act_snake_game.is_game_over) {
+            
+            while(!this.act_snake_game.pause_game) {
+                await this.my_timer(50);
+                console.log("paused the game");
+            }
+
+            if(i%skips == 0){
+                await this.my_timer(game_speed);
+            }
+            
+            my_computer_class.computer_move()        
+            i++;
+            if(i%1000 == 0){
+                i = 0;
+            }
+        }
+    }
+
+    async start_game_compute_until_apple(board_size, game_speed, skips) {
+        // cool idea would be to compute until apple is found
+        // then the player can click on a empty field to create the next apple
+        // then the computer can compute again
+        
+        this.act_snake_game = new snake_game(true, this, board_size=board_size);
+        var my_computer_class = new shortcut_finder(this.act_snake_game)
+        var i = 0;
+
+        
+        while (!this.act_snake_game.is_game_over) {
+    
+            
+            my_computer_class.computer_move()        
+            await this.my_timer(game_speed);
+            if(this.act_snake_game.apple_eaten) {
+                
+                while(!this.act_snake_game.user_has_clicked) {
+                    await this.my_timer(50);
+                    console.log("waiting for user to click");
+                }
+                this.act_snake_game.user_has_clicked = false;
+                // await this.my_timer(500);
+                // find method a user can create a new apple
+                // if the users clicks at this moment the apple is on a new position
+                
+            }     
+            
+            if(i%1000 == 0){
+                this.response_timeout = true;
+                i = 0;
+            }
+        }    
+    }
+
 
 }
 
@@ -159,6 +166,7 @@ class snake_game{
     board_size = 0
 
     user_has_clicked = false
+    pause_game = true
 
     dirs_map_input = {
         "w": {"row":0,"column":-1}, 
@@ -176,6 +184,14 @@ class snake_game{
         this.init();
 
         document.getElementById("myCanvas").addEventListener( "click", this.create_apple_through_click );
+        
+        addEventListener('keypress', (event) => {
+            // console.log(event.key);
+            // console.log(init_things["snake"]);
+            if(this.dirs_map_input[event.key]){
+                this.direction = this.dirs_map_input[event.key]
+            }
+        });
     }
 
     create_apple_through_click = e => {
@@ -198,22 +214,10 @@ class snake_game{
         this.snake.length = 0;
 
         this.snake = [this.start_position];
-        this.my_helper_class.draw_cube(1,1,true);
+        // this.my_helper_class.draw_cube(1,1,true);
         this.direction = this.dirs_map_input["s"];
         this.create_apple();
         
-
-        addEventListener('keypress', (event) => {
-            // console.log(event.key);
-            // console.log(init_things["snake"]);
-            if(this.dirs_map_input[event.key]){
-                this.direction = this.dirs_map_input[event.key]
-            }
-            
-            
-            // event.key
-        
-        });
     }    
     delete_last() {
         var end_of_snake = this.snake[0];
@@ -253,6 +257,7 @@ class snake_game{
 
         if(this.board[newx][newy]){
             console.log( "game_over" );
+            this.is_game_over = true;
             this.init();
             
             return ""
@@ -299,8 +304,6 @@ class snake_game{
 
     }
     create_apple_with_location(new_location) {
-
-
         this.my_helper_class.draw_cube(new_location["row"],new_location["column"],true,"#F9A825");
         
         this.apple_location = new_location
@@ -327,18 +330,6 @@ class snake_game{
         this.apple_location = {"row": random_x, "column":random_y}
     
     }
-
-    startGame() {
-        this.init();
-        this.is_game_over = false;
-        this.my_helper_class.start_game_real();
-    }
-    pauseGame(){
-        
-    }
-    // resumeGame()
-    // restartGame()
-
 }
 
 
