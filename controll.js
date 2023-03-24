@@ -1,6 +1,22 @@
 var my_class = new my_helper_class();
 var is_game_running = false;
 var is_game_over_js_magic = null;
+
+const spoilerBtn = document.querySelector('.spoiler_btn');
+const spoilerContent = document.querySelector('.spoiler_content');
+
+spoilerBtn.addEventListener('click', function() {
+  if (spoilerContent.style.display === 'none') {
+    spoilerContent.style.display = 'block';
+    spoilerBtn.value = 'Hide Advanced Settings';
+  } else {
+    spoilerContent.style.display = 'none';
+    spoilerBtn.value = 'Advanced Settings';
+  }
+});
+spoilerBtn.click();
+
+
 function startGame() {
     
     
@@ -16,9 +32,12 @@ function startGame() {
 
     var game_size = parseInt(document.querySelector('#size').value || 11);
     var game_speed = parseInt(document.querySelector('#speed').value || 11);
-    var game_skips = parseInt(document.querySelector('#skips').value || 100);
-    // convert to int
-    game_size = parseInt(game_size);
+    var game_skips = parseInt(document.querySelector('#skips').value || 1);
+    
+    // if game size is not odd, make it odd
+    if(game_size % 2 == 0){
+        game_size = game_size + 1;
+    }
 
     // get value from radio buttons
     var game_type = document.querySelector('input[name="play"]:checked').value;
@@ -45,7 +64,10 @@ function startGame() {
     
 };
 function stopGame() {
+    my_class.act_snake_game.user_has_clicked = true;	
+    //my_class.act_snake_game.create_apple()
     my_class.act_snake_game.is_game_over = true;
+    
 }
 function pauseGame() {
     // toggle between true and false 

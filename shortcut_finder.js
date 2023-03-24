@@ -112,7 +112,6 @@ class shortcut_finder{
             move_y = next_move["column"];
                 }
         else{
-            console.log(move_x +"  " + move_y );
                 }
 
         this.act_snake_game.direction = {"row": move_x, "column": move_y}
@@ -241,7 +240,6 @@ class shortcut_finder{
                                 e["row"] == this.act_snake_game.apple_location["row"] && 
                                 e["column"] == this.act_snake_game.apple_location["column"]);
 
-                        console.log(this.calc_dist(apple_index, future_index));
                         could_move_list.push({"move": element, "distance": this.calc_dist(apple_index, future_index)})
                     }                   
                     

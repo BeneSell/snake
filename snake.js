@@ -164,7 +164,6 @@ class snake_game{
     direction = {}
     start_position = {"row":1,"column":1}
     board_size = 0
-
     user_has_clicked = false
     pause_game = true
 
@@ -234,6 +233,8 @@ class snake_game{
         // no big deal for the computer
 
         if(this.apple_eaten){
+            this.update_highscore();
+            this.update_score();
             this.create_apple();
          }
 
@@ -303,6 +304,23 @@ class snake_game{
         
 
     }
+    update_highscore() {
+        var score = this.snake.length;
+        var high_score =  document.getElementById("highscore").innerHTML;
+
+        if(high_score < score) {
+            document.getElementById("highscore").innerHTML = score;
+        }
+    }
+    update_score() {
+        var score = this.snake.length;
+        document.getElementById("currScore").innerHTML = score;
+
+    }
+
+
+
+    
     create_apple_with_location(new_location) {
         this.my_helper_class.draw_cube(new_location["row"],new_location["column"],true,"#F9A825");
         

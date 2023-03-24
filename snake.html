@@ -7,60 +7,52 @@
 </head>
 <body>
 
-
-<aside>
-    
-    <form class="snake_settings">
-        <label class="text_input">Enter the size of the field only odd numbers allowed
-            <input type="text" class="settings" id="size" placeholder="Like 3,5,7,9">
-        </label>
-        <label class="text_input">Enter the speed of the game
-        <input type="text" class="settings" id="speed" placeholder="Enter speed">
-        </label>
-        <label class="text_input">Enter steps to skip visual
-            <input type="text" class="settings" id="skips" placeholder="Like 1, 2, 3, 4, 5, 6, 7, 8, 9">
-            </label>
-        
-        
-            <section class="settings" id="play">
-                <p>How do you want to play?</p>
-                <label><input type="radio" name="play" value="1">Controll the snake</label>
-                <label><input type="radio" name="play" value="2">Controll the apple</label>
-                <label><input type="radio" name="play" value="3" checked="checked" >Dont controll anything</label>
-            </section>
-                
-            </div>
-            
-
-        
-    </form>
-
-</aside>
 <main>
     <h1>Snake</h1>
     <div id="canvas_placeholder">
         <canvas id="myCanvas" width="396" height="396" style="border:1px solid #d3d3d3;">
         </canvas>
+        <div>
+            <p>Score: <span id="currScore"></span></p>
+            <p>Highscore: <span id="highscore"></span></p>
+        </div>
     </div>
     <div class="controll_buttons">
         <input type="button" value="Start" onclick="startGame()">
         <input type="button" value="Stop" onclick="stopGame()">
         <input type="button" value="Pause" onclick="pauseGame()">
     </div>
-</main>
-</body>
-
-<aside>
-
-    <article>
-        <h2>About</h2>
+    <div class="spoiler">
+        <input type="button" class="spoiler_btn"></input>
         
-        
-    </article>
+            <form class="snake_settings spoiler_content">
+                <label class="text_input">Enter the size of the field only odd numbers allowed
+                    <input type="text" class="settings" id="size" placeholder="Like 3,5,7,9">
+                </label>
+                <label class="text_input">Enter the speed of the game
+                <input type="text" class="settings" id="speed" placeholder="Enter speed">
+                </label>
+                <label class="text_input">Enter steps to skip visual
+                    <input type="text" class="settings" id="skips" placeholder="Like 1, 2, 3, 4, 5, 6, 7, 8, 9">
+                    </label>
+                
+                
+                    <section class="settings" id="play">
+                        <p>How do you want to play?</p>
+                        <label><input type="radio" name="play" value="1">Controll the snake</label>
+                        <label><input type="radio" name="play" value="2">Controll the apple</label>
+                        <label><input type="radio" name="play" value="3" checked="checked" >Dont controll anything</label>
+                    </section>  
+            </form>
+        </div>
       
-
+</main>
+<aside>
+    <h1>About</h1>
+    <p>This is a interactive version of the classic game of snake, where you have the freedom to choose your own gameplay. You can opt to play the game as usual, or switch things up by setting the apple for the snake to chase. And if you're feeling particularly daring, you can even choose to sit back and watch the game unfold, with a great chance to still come out victorious.</p>
 
 </aside>
+</body>
 
 </html>
 <script src="./shortcut_finder.js"></script>
