@@ -18,15 +18,6 @@ spoilerBtn.click();
 
 
 function startGame() {
-    
-    // check if on a mobile device
-    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-        // fokus on the tag with id=direction-input
-        var inputElement = document.getElementById("direction-input");
-        inputElement.style.visibility = 'visible'; // unhide the input
-        inputElement.focus(); // focus on it so keyboard pops
-        inputElement.style.visibility = 'hidden'; // hide it again
-    }
 
     if(is_game_running == true){
         return;       
@@ -53,6 +44,15 @@ function startGame() {
     var game_promise = null;
     switch (game_type) {
         case "1":
+            // check if on a mobile device
+            if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+                // fokus on the tag with id=direction-input
+                var inputElement = document.getElementById("direction-input");
+                inputElement.style.visibility = 'visible'; // unhide the input
+                inputElement.focus(); // focus on it so keyboard pops
+                inputElement.style.visibility = 'hidden'; // hide it again
+            }
+
             game_promise = my_class.start_game_real(game_size, game_speed, game_skips);      
         break;
         case "2":
