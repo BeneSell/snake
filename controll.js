@@ -91,19 +91,17 @@ function pauseGame() {
     
 }
 
-function activateButton(event, buttonNumber) {
+function activateButton(event) {
     // disable default
-    event.preventDefault();
     const buttons = document.querySelectorAll('#button-bar input');
     buttons.forEach(button => {
       button.classList.remove('active');
     });
-  
-    const activeButton = document.getElementById(`button${buttonNumber}`);
-    activeButton.classList.add('active');
+        
+    event.target.classList.add('active');
 
     // set value of radio button to the button number
-    document.querySelector('input[name="play"]:checked').value = buttonNumber;
+    document.querySelector('input[name="play"]:checked').value = parseInt(event.target.id.slice(6));
   }
 
 // var my_class = new my_helper_class()
