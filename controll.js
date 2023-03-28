@@ -19,7 +19,12 @@ spoilerBtn.click();
 
 function startGame() {
     
-    
+    // check if on a mobile device
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        // fokus on the tag with id=direction-input
+        document.getElementById("direction-input").focus();
+    }
+
     if(is_game_running == true){
         return;       
     } 

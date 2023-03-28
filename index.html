@@ -1,22 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snake Game</title>
     <link rel="stylesheet" href="snake.css">
-</head>
 <body>
 
 <main>
     <h1>Snake HD</h1>
     <div id="canvas_placeholder">
-        <canvas id="myCanvas" width="396" height="396" style="border:1px solid #d3d3d3;">
-        </canvas>
         <div>
             <p>Score: <span id="currScore"></span></p>
             <p>Highscore: <span id="highscore"></span></p>
         </div>
+        <canvas id="myCanvas" width="396" height="396" style="border:1px solid #d3d3d3;">
+        </canvas>
+
     </div>
+    <input type="number" id="direction-input" style="visibility: hidden;" placeholder="Enter direction">
     <div class="controll_buttons">
         <input type="button" value="Start" onclick="startGame()">
         <input type="button" value="Stop" onclick="stopGame()">

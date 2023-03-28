@@ -171,7 +171,12 @@ class snake_game{
         "w": {"row":0,"column":-1}, 
         "s": {"row":0,"column":1},
         "a": {"row":-1,"column":0},
-        "d": {"row":1,"column":0}
+        "d": {"row":1,"column":0},
+
+        "8": {"row":0,"column":-1}, 
+        "5": {"row":0,"column":1},
+        "4": {"row":-1,"column":0},
+        "6": {"row":1,"column":0}
     }
     
 
@@ -190,6 +195,14 @@ class snake_game{
             if(this.dirs_map_input[event.key]){
                 this.direction = this.dirs_map_input[event.key]
             }
+        });
+        document.getElementById('direction-input').addEventListener('change', (event) => {
+            // console.log(event.key);
+            // console.log(init_things["snake"]);
+            if(this.dirs_map_input[parseInt(event.target.value)]){
+                this.direction = this.dirs_map_input[event.key]
+            }
+            document.getElementById('direction-input').value = "";
         });
     }
 
