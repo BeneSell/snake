@@ -26,6 +26,11 @@
         <input type="button" value="Stop" onclick="stopGame()">
         <input type="button" value="Pause" onclick="pauseGame()">
     </div>
+    <div id="button-bar">
+        <button class="button_inside_bar" id="button1" onclick="activateButton(event, 1)">Controll the snake</button>
+        <button class="button_inside_bar" id="button2" onclick="activateButton(event, 2)">Controll the apple</button>
+        <button class="button_inside_bar active" id="button3" onclick="activateButton(event, 3)">Dont controll anything</button>
+    </div>
     <div class="spoiler">
         <input type="button" class="spoiler_btn"></input>
         
@@ -41,11 +46,9 @@
                     </label>
                 
                 
-                    <section class="settings" id="play">
-                        <p>How do you want to play?</p>
-                        <label><input type="radio" name="play" value="1">Controll the snake</label>
-                        <label><input type="radio" name="play" value="2">Controll the apple</label>
-                        <label><input type="radio" name="play" value="3" checked="checked" >Dont controll anything</label>
+                    <section style="visibility: hidden;" class="settings" id="play">
+                        <!-- very bad style i know! the value gets changed when clicked on the button above -->
+                        <label><input type="radio" name="play" value="3" checked="checked" >Everything is possible</label>
                     </section>  
             </form>
         </div>

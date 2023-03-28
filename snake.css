@@ -111,3 +111,17 @@ form.snake_settings{
 }
 /* Path: snake.js */
 /* Snake game */
+
+.button_inside_bar {
+    background-color: #ddd;
+    border: none;
+    color: #000;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+.button_inside_bar.active {
+background-color: #555;
+color: #fff;
+}

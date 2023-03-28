@@ -23,15 +23,6 @@ function startGame() {
         return;       
     } 
     is_game_running = true;
-
-    
-    // var my_class = new my_helper_class()
-    var my_form = document.getElementsByClassName("snake_settings")[0];
-    var settings = my_form.querySelectorAll(".settings")
-
-    var game_size = parseInt(document.querySelector('#size').value || 11);
-    var game_speed = parseInt(document.querySelector('#speed').value || 11);
-    var game_skips = parseInt(document.querySelector('#skips').value || 1);
     
     // if game size is not odd, make it odd
     if(game_size % 2 == 0){
@@ -53,12 +44,23 @@ function startGame() {
                 inputElement.style.visibility = 'hidden'; // hide it again
             }
 
+            var game_size = parseInt(document.querySelector('#size').value || 11);
+            var game_speed = parseInt(document.querySelector('#speed').value || 250);
+            var game_skips = parseInt(document.querySelector('#skips').value || 1);
             game_promise = my_class.start_game_real(game_size, game_speed, game_skips);      
         break;
         case "2":
+            
+            var game_size = parseInt(document.querySelector('#size').value || 11);
+            var game_speed = parseInt(document.querySelector('#speed').value || 11);
+            var game_skips = parseInt(document.querySelector('#skips').value || 1);
             game_promise = my_class.start_game_compute_until_apple(game_size, game_speed, game_skips);
         break;
         case "3":
+
+            var game_size = parseInt(document.querySelector('#size').value || 11);
+            var game_speed = parseInt(document.querySelector('#speed').value || 11);
+            var game_skips = parseInt(document.querySelector('#skips').value || 1);
             game_promise = my_class.start_game_computer(game_size, game_speed, game_skips);
         break;
         default:    
@@ -72,8 +74,14 @@ function startGame() {
     
 };
 function stopGame() {
-    my_class.act_snake_game.user_has_clicked = true;	
-    //my_class.act_snake_game.create_apple()
+    if(my_class.act_snake_game.user_has_clicked == false){
+        my_class.act_snake_game.user_has_clicked = true;	
+        my_class.act_snake_game.create_apple();
+        
+    }
+    
+    
+    
     my_class.act_snake_game.is_game_over = true;
     
 }
@@ -82,6 +90,21 @@ function pauseGame() {
     my_class.act_snake_game.pause_game = !my_class.act_snake_game.pause_game;
     
 }
+
+function activateButton(event, buttonNumber) {
+    // disable default
+    event.preventDefault();
+    const buttons = document.querySelectorAll('#button-bar button');
+    buttons.forEach(button => {
+      button.classList.remove('active');
+    });
+  
+    const activeButton = document.getElementById(`button${buttonNumber}`);
+    activeButton.classList.add('active');
+
+    // set value of radio button to the button number
+    document.querySelector('input[name="play"]:checked').value = buttonNumber;
+  }
 
 // var my_class = new my_helper_class()
 // my_class.start_game_computer(11,10,5);
