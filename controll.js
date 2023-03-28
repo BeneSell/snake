@@ -22,7 +22,10 @@ function startGame() {
     // check if on a mobile device
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
         // fokus on the tag with id=direction-input
-        document.getElementById("direction-input").focus();
+        var inputElement = document.getElementById("direction-input");
+        inputElement.style.visibility = 'visible'; // unhide the input
+        inputElement.focus(); // focus on it so keyboard pops
+        inputElement.style.visibility = 'hidden'; // hide it again
     }
 
     if(is_game_running == true){
