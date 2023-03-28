@@ -94,7 +94,7 @@ function pauseGame() {
 function activateButton(event, buttonNumber) {
     // disable default
     event.preventDefault();
-    const buttons = document.querySelectorAll('#button-bar button');
+    const buttons = document.querySelectorAll('#button-bar input');
     buttons.forEach(button => {
       button.classList.remove('active');
     });
