@@ -173,7 +173,7 @@ class snake_game{
         "a": {"row":-1,"column":0},
         "d": {"row":1,"column":0},
 
-        "8": {"row":0,"column":-1}, 
+        "2": {"row":0,"column":-1}, 
         "5": {"row":0,"column":1},
         "4": {"row":-1,"column":0},
         "6": {"row":1,"column":0}
