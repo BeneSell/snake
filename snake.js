@@ -65,7 +65,7 @@ class my_helper_class{
         }
         ctx.fill();
     
-        ctx.fillStyle = "#D5F5E3";
+        ctx.fillStyle = "#000000";
     
         ctx.fillText(text, (x*33)+15,(y*33)+15);
         
@@ -238,6 +238,17 @@ class snake_game{
         this.my_helper_class.draw_cube(end_of_snake["row"],end_of_snake["column"],false);
         // console.log(snake);
     }
+    redraw_snake() {
+
+        for (let i = this.snake.length - 1; i >= 0; i--) {
+            const element = this.snake[i];
+            const r = 212 // - (i * 3)
+            const g = 235 
+            const b = 231 
+            console.log("rgb("+r+","+g+","+b+")")
+            this.my_helper_class.draw_cube(element["row"],element["column"],true, "rgb("+r+","+g+","+b+")", i);
+        }
+    }
 
     sequence_move() {
 
@@ -266,6 +277,7 @@ class snake_game{
             this.apple_eaten = true;
         }else{
             this.delete_last();
+            
         }
         
 
@@ -278,16 +290,17 @@ class snake_game{
         }
 
         this.snake.push({"row":newx, "column":newy});
-    
+        this.redraw_snake();
         // apply it on the board
         this.board[newx][newy] = true;
         if(this.snake.length > 1){
         this.my_helper_class.draw_cube(newx, newy, true, "#2E4053");
-        this.my_helper_class.draw_cube(curx, cury, true, "#70C1B3");
+        // this.my_helper_class.draw_cube(curx, cury, true, "#70C1B3");
     }
         else{
             this.my_helper_class.draw_cube(newx, newy, true, "#2E4053");
         }
+        
         
         // var snake_head = this.snake[this.snake.length - 1];
         // var snake_second = this.snake[this.snake.length - 2];

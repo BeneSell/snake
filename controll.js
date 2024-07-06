@@ -85,10 +85,11 @@ function stopGame() {
     my_class.act_snake_game.is_game_over = true;
     
 }
-function pauseGame() {
+function pauseGame(e) {
     // toggle between true and false 
     my_class.act_snake_game.pause_game = !my_class.act_snake_game.pause_game;
-    
+    console.log(e.target)
+    e.target.value = my_class.act_snake_game.pause_game ? 'Pause' : 'Resume';
 }
 
 function activateButton(event) {
